@@ -1,4 +1,4 @@
-name: Build and deploy Python app to Azure Web App - Flask-application
+name: Build and deploy Python app to Azure Web App
 
 on:
   push:
@@ -11,12 +11,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      - name: Set up Python version
+      - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.12'
+          python-version: '3.x'  # Replace with your Python version
 
       - name: Install dependencies
         run: |
@@ -27,7 +28,7 @@ jobs:
       - name: Zip artifact for deployment
         run: zip -r release.zip ./*
 
-      - name: Upload artifact for deployment jobs
+      - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
           name: python-app
@@ -41,12 +42,12 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
-      - name: Download artifact from build job
+      - name: Download artifact
         uses: actions/download-artifact@v2
         with:
           name: python-app
 
-      - name: Unzip artifact for deployment
+      - name: Unzip artifact
         run: unzip -o release.zip -d ./deploy
 
       - name: Set up Azure CLI
