@@ -61,18 +61,19 @@ jobs:
       - name: Unzip artifact for deployment
         run: unzip release.zip
 
-      
-      - name: Login to Azure
-        uses: azure/login@v1
+      - name: Set up Azure CLI
+        uses: azure/CLI@v1
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_45C15F2779C349AF917436A0EFEB1892 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_CA276A13AC0A412D81B809D94A749022 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_C7C59ADF01C449E4A297A9DF0ED9B130 }}
+          azcliversion: latest
 
-      - name: 'Deploy to Azure Web App'
+      - name: Login to Azure
+        run: az login --service-principal -u ${{ secrets.AZURE_CREDENTIALS.clientId }} -p ${{ secrets.AZURE_CREDENTIALS.clientSecret }} --tenant ${{ secrets.AZURE_CREDENTIALS.tenantId }}
+
+      - name: Select Azure subscription
+        run: az account set --subscription ${{ secrets.AZURE_CREDENTIALS.subscriptionId }}
+
+      - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
-        id: deploy-to-webapp
         with:
           app-name: 'Flask-application'
           slot-name: 'Production'
-          
