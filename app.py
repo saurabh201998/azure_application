@@ -1,4 +1,3 @@
-# app.py
 #this is flask application using azure
 from flask import Flask
 
