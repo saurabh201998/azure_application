@@ -1,4 +1,4 @@
-#this is flask application using azure.
+#this is flask application using azure
 from flask import Flask
 
 app = Flask(__name__)
