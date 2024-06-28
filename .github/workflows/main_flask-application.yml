@@ -33,7 +33,7 @@ jobs:
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
 
       - name: Zip artifact for deployment
-        run: zip release.zip ./* -r
+        run: zip -r release.zip ./* ./.github/workflows/* ./.github/workflows
 
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v3
@@ -74,7 +74,7 @@ jobs:
 
       - name: Deploy to Azure Web App
         run: |
-          az webapp deployment source config-zip --resource-group <resource-group-name> --name <app-name> --src release.zip
+          az webapp deployment source config-zip --resource-group DefaultResourceGroup-EUS --name flask-application --src release.zip
         env:
           AZURE_WEBAPP_NAME: 'Flask-application'
-          AZURE_RESOURCE_GROUP: '<resource-group-name>'
+          AZURE_RESOURCE_GROUP: 'DefaultResourceGroup-EUS'
